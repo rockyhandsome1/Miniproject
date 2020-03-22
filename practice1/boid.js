@@ -12,7 +12,6 @@ constructor(x, y) {
 
 
 run = function(boids) {
-  let mouse = new p5.Vector(mouseX,mouseY);
 
   if(atarget.checked())
   this.seekt();
@@ -137,24 +136,42 @@ avoido = function(boids){
 
 render = function() {
   // Draw a triangle rotated in the direction of velocity
+  
   let theta = this.velocity.heading() + radians(90);
-  fill(127);
+  fill(0,255,255);
   stroke(200);
+  //noStroke();
   push();
   translate(this.position.x, this.position.y);
   rotate(theta);
-  beginShape();
-  if(Boid.dvnval){  
-    noFill();
-    //arc(0,0,50,50,PI,0,CHORD);
-    ellipse(0,0,50,50);
+  if(tc.checked())
+  ellipse(0,0,10,10);
+  if(bs.checked()){
+    ellipse(0,0,10,10);
+    if(Boid.dvnval){  
+      noFill();
+      //arc(0,0,50,50,PI,0,CHORD);
+      ellipse(0,0,50,50);
+    }
   }
-  fill(127);
-  vertex(0, -this.r * 2);
-  vertex(-this.r, this.r * 2);
-  vertex(this.r, this.r * 2);
-  endShape(CLOSE);
+  else
+  {
+    beginShape();
+      if(Boid.dvnval){  
+      noFill();
+      //arc(0,0,50,50,PI,0,CHORD);
+      ellipse(0,0,50,50);
+      }
+    fill(255,255,0);
+    vertex(0, -this.r * 2);
+    vertex(-this.r, this.r * 2);
+    vertex(this.r, this.r * 2);
+    endShape(CLOSE);
+  }
   pop();
+  fill(0);
+  ellipse(this.position.x,this.position.y,1,1);
+  
 }
 
 // Wraparound
