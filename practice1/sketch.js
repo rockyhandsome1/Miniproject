@@ -12,7 +12,8 @@ let bs;
 let tc;
 let tentaclen = []; 
 let k=1;
-let b;
+let b = [];
+let c=0;
 
 function setup() {
   createCanvas(640, 360);
@@ -30,14 +31,13 @@ function setup() {
   flock = new Flock();
   // Add an initial set of boids into the system
   for (let i = 0; i < 1; i++) {
-    b = new Boid(width / 2,height / 2);
-    flock.addBoid(b);
+    b[i] = new Boid(width / 2,height / 2);
+    flock.addBoid(b[i]);
   }
-  sett(k);
+    sett(100);
 }
 
 function draw() {
-
   d=walls.value();
   background(51);
 
@@ -55,12 +55,13 @@ function draw() {
     rect(width/2, height/2, width-d*2, height-d*2);
   }
 
-  //ellipse(width/2,height/2,360,360);
   if(dist(width/2,height/2,mouseX,mouseY)<rad) 
   if (mouseIsPressed) 
   if (mouseButton == LEFT)  
-    flock.addBoid(new Boid(mouseX, mouseY));
-    //console.log(dist(width/2,height/2,mouseX,mouseY));
+  {
+    b[++c] = new Boid(mouseX, mouseY);
+    flock.addBoid(b[c]);
+  }
 
   noFill();
   if(avoid.checked())
@@ -71,7 +72,10 @@ function draw() {
   ellipse(mouseX,mouseY,10,10);
   
   flock.run();
-  tentaclen[0].follow(b.position.x,b.position.y);
+  
+  for(let i=0;i<c+1;i++)
+  tentaclen[i].follow(b[i].position.x,b[i].position.y);
+  k=c+1;
   un(k);
 }
 
@@ -91,10 +95,10 @@ function sett(n){
     pointn[i] = new p5.Vector(random(100), random(100));
   let currentn = [];
   for (let i = 0; i < n; i++)
-    currentn[i] = new Segment(pointn[i], 10, 0);
+    currentn[i] = new Segment(pointn[i], 0, 0);
   let nextn = [];
   for (let j = 0; j < n; j++)
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 40; i++) {
     nextn[j] = new Segment(currentn[j], 1, i);
     currentn[j].child = nextn[j];
     currentn[j] = nextn[j];
