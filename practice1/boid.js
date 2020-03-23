@@ -144,6 +144,10 @@ render = function() {
   push();
   translate(this.position.x, this.position.y);
   rotate(theta);
+  ////
+  //tentaclen[c++].follow(this.position.x, this.position.y);
+  ////
+
   if(tc.checked())
   ellipse(0,0,10,10);
   if(bs.checked()){

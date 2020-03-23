@@ -10,6 +10,9 @@ let bcount=0;
 let rad = 180;
 let bs;
 let tc;
+let tentaclen = []; 
+let k=1;
+let b;
 
 function setup() {
   createCanvas(640, 360);
@@ -23,17 +26,18 @@ function setup() {
   atarget = createCheckbox('Activate_target_(mouse)',false);
   avoid = createCheckbox('avoid_obstacle_(mouse)',false);
   tc = createCheckbox('Triangle+circle',true);
-  //wall.changed(dispwall);
- 
+    
   flock = new Flock();
   // Add an initial set of boids into the system
   for (let i = 0; i < 1; i++) {
-    let b = new Boid(width / 2,height / 2);
+    b = new Boid(width / 2,height / 2);
     flock.addBoid(b);
   }
+  sett(k);
 }
 
 function draw() {
+
   d=walls.value();
   background(51);
 
@@ -67,7 +71,10 @@ function draw() {
   ellipse(mouseX,mouseY,10,10);
   
   flock.run();
+  tentaclen[0].follow(b.position.x,b.position.y);
+  un(k);
 }
+
 
 function debugvision(){
   if(this.checked()){
@@ -77,6 +84,44 @@ function debugvision(){
     Boid.dvnval=0;
   }
 }
+
+function sett(n){
+  let pointn = [];
+  for (let i = 0; i < n; i++)
+    pointn[i] = new p5.Vector(random(100), random(100));
+  let currentn = [];
+  for (let i = 0; i < n; i++)
+    currentn[i] = new Segment(pointn[i], 10, 0);
+  let nextn = [];
+  for (let j = 0; j < n; j++)
+    for (let i = 0; i < 200; i++) {
+    nextn[j] = new Segment(currentn[j], 1, i);
+    currentn[j].child = nextn[j];
+    currentn[j] = nextn[j];
+  }
+  for (let i = 0; i < n; i++)
+    tentaclen[i] = currentn[i];
+}
+
+function un(n){
+ 
+  for (let i = 0; i < n; i++){
+    tentaclen[i].update();
+    tentaclen[i].show();
+  }
+
+  let nextn = [];
+    for (let i = 0; i < n; i++)
+      nextn[i] = tentaclen[i].par;
+  for (let i = 0; i < n; i++)
+   while (nextn[i]) {
+    nextn[i].follow();
+    nextn[i].update();
+    nextn[i].show();
+    nextn[i] = nextn[i].par;
+  } 
+}
+
 
 
 
