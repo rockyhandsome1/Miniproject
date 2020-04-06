@@ -7,18 +7,19 @@ let walls;
 let atarget;
 let avoid;
 let bcount=0;
-let rad = 180;
+let rad = 45;
 let bs;
 let tc;
 let tentaclen = []; 
 let k=1;
 let b = [];
 let c=0;
+let boidgen;
 
 function setup() {
   createCanvas(640, 360);
 
-  createP("click mouse near the center to generate new boids.");
+  createP("click mouse near bottom right corner to generate new boids.");
   bs = createCheckbox('Boid_circle',false);
   debugv = createCheckbox('Boid_vision',false);
   debugv.changed(debugvision);
@@ -27,7 +28,8 @@ function setup() {
   atarget = createCheckbox('Activate_target_(mouse)',false);
   avoid = createCheckbox('avoid_obstacle_(mouse)',false);
   tc = createCheckbox('Triangle+circle',true);
-    
+  boidgen = createCheckbox('Boid generator space',false);
+
   flock = new Flock();
   // Add an initial set of boids into the system
   for (let i = 0; i < 1; i++) {
@@ -55,13 +57,16 @@ function draw() {
     rect(width/2, height/2, width-d*2, height-d*2);
   }
 
-  if(dist(width/2,height/2,mouseX,mouseY)<rad) 
+  if(dist(mouseX,mouseY,width-50,height-50)<rad) 
   if (mouseIsPressed) 
   if (mouseButton == LEFT)  
   {
     b[++c] = new Boid(mouseX, mouseY);
     flock.addBoid(b[c]);
   }
+
+  if(boidgen.checked())
+  ellipse(width-50, height-50,rad*2,rad*2);
 
   noFill();
   if(avoid.checked())
