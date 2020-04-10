@@ -16,6 +16,7 @@ let b = [];
 let c=0;
 let boidgen;
 
+
 function setup() {
   createCanvas(640, 360);
 
@@ -36,7 +37,7 @@ function setup() {
     b[i] = new Boid(width / 2,height / 2);
     flock.addBoid(b[i]);
   }
-    sett(100);
+    sett(51);
 }
 
 function draw() {
@@ -60,6 +61,7 @@ function draw() {
   if(dist(mouseX,mouseY,width-50,height-50)<rad) 
   if (mouseIsPressed) 
   if (mouseButton == LEFT)  
+  if(c<49)
   {
     b[++c] = new Boid(mouseX, mouseY);
     flock.addBoid(b[c]);
@@ -67,7 +69,7 @@ function draw() {
 
   if(boidgen.checked())
   ellipse(width-50, height-50,rad*2,rad*2);
-
+  
   noFill();
   if(avoid.checked())
   fill(255,0,0);
@@ -77,7 +79,12 @@ function draw() {
   ellipse(mouseX,mouseY,10,10);
   
   flock.run();
-  
+  if(c>=49){
+    c=49;
+    fill(255,0,0)
+    text('MAX Boid limit reached',10,50);
+  }
+ 
   for(let i=0;i<c+1;i++)
   tentaclen[i].follow(b[i].position.x,b[i].position.y);
   k=c+1;
@@ -103,7 +110,7 @@ function sett(n){
     currentn[i] = new Segment(pointn[i], 0, 0);
   let nextn = [];
   for (let j = 0; j < n; j++)
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 10; i++) {
     nextn[j] = new Segment(currentn[j], 1, i);
     currentn[j].child = nextn[j];
     currentn[j] = nextn[j];

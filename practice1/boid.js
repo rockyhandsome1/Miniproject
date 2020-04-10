@@ -73,7 +73,8 @@ seek = function(target) {
 }
 
 seekt = function() {
-  let mouse = new p5.Vector(mouseX,mouseY);
+  let mouse = new p5.Vector(mouseX-100,mouseY);
+  ellipse(mouse.x,mouse.y,10,10);
   let desired = new p5.Vector.sub(mouse,this.position);  // A vector pointing from the location to the target
   // Normalize desired and scale to maximum speed
   let dd = desired.mag();
@@ -120,7 +121,7 @@ avoido = function(boids){
     var r = new p5.Vector(desired.y,-desired.x);
 
   r.normalize();
-  let steer = new p5.Vector.sub(desired,r);
+  let steer = new p5.Vector.add(desired,r);
   let steer1 = new p5.Vector.sub(steer,this.velocity);
   steer1.add(this.maxforce);  // Limit to maximum steering force
   //this.acceleration.mult(0);
@@ -276,7 +277,7 @@ align = function(boids) {
 // Cohesion
 // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
 cohesion = function(boids) {
-  let neighbordist = 100;
+  let neighbordist = 25;
   let sum = createVector(0, 0);   // Start with empty vector to accumulate all locations
   let count = 0;
   for (let i = 0; i < boids.length; i++) {
